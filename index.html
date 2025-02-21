@@ -3,27 +3,51 @@ layout: default
 css_extension:
   - href: "/assets/css/homepage.css"
 ---
-{% include /get/hero_data.liquid %}
-<div id="hero-image" class="vh-75 vh-md-50">
-  <div class="container-xxl">
-    <div class="row justify-content-end">
-      {% if hero_data.additional_image %}
-        <div class="col-12 col-sm-10 col-md-6 col-xxl-7 col- d-flex order-md-2">
-          <img class="img-fluid pt-3 pt-lg-0" src="{{ hero_data.additional_image.src | relative_url }}" alt="{{ hero_data.additional_image.alt }}" />
+{% assign date = "now" | date: "%s" %}
+{% assign enddate = "2024-08-15" | date: "%s" %}
+{% if date < enddate %}
+<div class="bg-primary py-2">
+        <div class="container-xxl">
+            <span class="text-dark">CHTC is hiring! View the new Research Cyberinfrastructure Specialist position on the jobs page and apply by August 15th.</a>
+            <a class="btn btn-light px-1 ms-2 py-0" href="https://chtc.cs.wisc.edu/jobs.html#full-time-positions">View Job Posting</a>
         </div>
-      {% endif %}
-      <div class="col-12 col-md-5 col-xxl-5">
-        <div class="p-3 mb-3 mt-4 d-flex flex-column" id="hero-content-container">
-          <h3 class="text-white">{{ hero_data.title }}</h3>
-          <hr>
-          <p class="text-white">
-            {{ hero_data.excerpt }}
-          </p>
-          <a class="mt-auto me-auto btn btn-primary" href="{{ hero_data.url | relative_url }}">Read about our Spotlight User</a>
-        </div>
-      </div>
     </div>
-  </div>
+{% endif %}
+{% include /get/hero_story.liquid %}
+<div id="hero-image" class="vh-75 vh-md-50">
+    <div class="container-xxl">
+        <div class="row {% if hero_story.additional_image %}justify-content-center{% endif %}">
+            {% if hero_story.additional_image %}
+                <div class="col-12 col-sm-10 col-md-6 col-xxl-7 col- d-flex order-md-2">
+                    <img class="img-fluid pt-3 pt-lg-0" src="{{ hero_story.additional_image.src | relative_url }}" alt="{{ hero_story.additional_image.alt }}" />
+                </div>
+            {% endif %}
+            <div class="col-12 col-md-6 col-xxl-5 order-lg-1">
+                <div class="p-3 my-3 d-flex flex-column shadow" id="hero-content-container">
+                    <h3>{{ hero_story.title }}</h3>
+                    <hr>
+                    <div style="min-height: 150px">
+                        {{ hero_story.excerpt | markdownify }}
+                    </div>
+                    {% unless hero_story.buttons %}
+                        <a class="mt-auto me-auto btn btn-primary" href="{{ hero_story.url | relative_url }}">Read About Spotlight User</a>
+                    {% else %}
+                        {% if hero_story.buttons.length == 1 %}
+                            <a class="mt-auto me-auto btn btn-primary" href="{{ buttons[0].href | relative_url }}">{{ buttons[0].text }}</a>
+                        {% else %}
+                            <div class="row mt-auto">
+                                {% for button in hero_story.buttons %}
+                                    <div class="col-auto">
+                                        <a class="btn btn-primary" href="{{ button.href | default: hero_story.url | relative_url }}">{{ button.text }}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endunless %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="container-xxl mt-4">
   <div class="row mb-4">
@@ -36,6 +60,25 @@ css_extension:
         providers that form the consortium are unified in their commitment to advance
         open science via these services.
       </p>
+      {% assign now = "now" | date: "%s" %}
+      {% if now < "1729036799" %}
+
+      <div class="p-3 my-4 bg-white-offset fs-5 rounded shadow">
+          <h3 class="mt-0 text-center pb-3">We are here to help with your <a href="https://new.nsf.gov/funding/opportunities/campus-cyberinfrastructure-cc/nsf24-530/solicitation">CC* Proposal (NSF 24-530)!</a></h3>
+          <p class="text-center">
+              Campuses with awards from the
+              <a href="https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=504748">NSF Campus Cyberinfrastructure (CC*)</a>
+              Program play an important role in supporting Open Science. To date, 37 CC* campuses contribute to the processing and storage capacity of the
+              <a href="{{ '/services/open_science_pool.html' | relative_url }}">Open Science Pool (OSPool)</a> that is
+              harnessed weekly by more than 3M jobs.
+          </p>
+          <p class="mb-0 d-flex justify-content-center pt-3">
+              <a class="btn btn-dark text-decoration-underline fs-5" href="mailto:cc-star-proposals@osg-htc.org">Email Us</a>
+              <a class="btn btn-dark text-decoration-underline ms-1 fs-5" href="/campus-cyberinfrastructure#let-the-path-team-help-with-your-proposal">How We Can Help</a>
+          </p>
+      </div>
+      {% endif %}
+
       <h5 id="open-science-pool-ospool"><a href="{{ '/services/open_science_pool.html' | relative_url }}">Open Science Pool</a></h5>
       <p>
         Any researcher performing Open Science in the US can become an <a href="{{ '/services/open_science_pool.html' | relative_url }}">OSPool</a> user. The OSPool
@@ -56,22 +99,29 @@ css_extension:
         <li>Improves file access performance, resource consumption and reliability.</li>
         <li><a href="https://portal.osg-htc.org/documentation/htc_workloads/managing_data/overview/">OSG-Operated Access Points</a> provide researchers with a default of 500GB of storage space on the OSDF.</li>
       </ul>
-      <h5 id="">OSG All-Hands (AH) Meetings</h5>
-      <p>
-        <b>
-          You are invited to Throughput Computing 2024 — an event that combines the
-          OSG All-Hands Meeting and HTCondor Week — in beautiful Madison, Wisconsin, the week of July 8-12.
-        </b>
-        OSG Consortium staff, campuses, and researchers will discuss topics including the state of the OSG, OSG services,
-        science enabled by the OSPool, and campus services and perspectives.
-      </p>
-      <p>
-        The annual All-Hands Meeting works to foster relationships between the researchers and campuses using OSG
-        services and service providers in the OSG Consortium. The more than 350 attendees of the 2023 meeting were
-        offered 30 presentations from researchers who reviewed their use of OSG services, executives who discussed
-        the current state and future plans for the OSG services, and administrators who reported on the adoption
-        of HTC by faculty and students on their campuses.
-      </p>
+        
+     <h5 id="Throughput Computing Week 2025">Throughput Computing 2025</h5>
+      <div>
+        <p>
+            <b>
+              You are invited to Throughput Computing Week 2025 (HTC25) in beautiful Madison, Wisconsin, the week of June 2-6, 2025. Registration will open in January 2025.
+            </b>
+        </p>
+        <p>
+            In July 2024, CHTC and the OSG Consortium hosted its second annual Throughput Computing Week in Madison, Wisconsin joined in person and remotely by 388 participants. 2024 themes included dedicated sessions on campus cyberinfrastructure, talks on AI and machine learning enabled by high throughput computing, and tutorials and presentations on the new Pelican Platform project.
+        </p>
+        <p>
+            <a href="/spotlights/htc-24-event.html">Read about some of the highlights from Throughput Computing Week 2024</a>
+            </p>
+        <p>
+            <a href="https://agenda.hep.wisc.edu/event/2175/timetable/#all.detailed">View HTC24 Contributions, Recordings and Slides</a>
+        </p>
+        <p>
+            If you are campus, researcher, scientific collaboration or government representative interested in throughput computing, please consider joining
+            the annual Throughput Computing Week.
+        </p>
+      </div>
+     
     </div>
     <div class="col-sm-12 col-md-4 mx-md-auto">
       {% include /get/future_events.html %}
@@ -105,7 +155,7 @@ css_extension:
       <div class="row gx-2">
         {% for map in site.data.maps %}
           <div class="col-12 col-sm-6 col-lg-3 {% cycle '', 'd-none d-sm-block', 'd-none d-lg-block', 'd-none d-lg-block' %}">
-            <a href="https://map.opensciencegrid.org{{ map.params }}">
+            <a href="https://map.osg-htc.org{{ map.params }}">
               <div class="rounded bg-white hover-shadow border-dark border">
                 <h4 class="m-0 p-2">{{ map.title }}</h4>
                 <picture>
@@ -231,7 +281,7 @@ css_extension:
           {% include image-title-desc-card.html
           img_src="/assets/images/logos/Logo_Round_Med.png"
           img_alt="PATh Logo"
-          title="Path"
+          title="PATh"
           description="
           The Partnership to Advance Throughput Computing (PATh) is an NSF-funded (#2030508) project to address the
           needs of the rapidly growing community embracing Distributed High Throughput Computing (dHTC) technologies

@@ -1,0 +1,39 @@
+{% include get/spotlights.liquid %}
+
+{% assign 3_months_ago = "now" |  date: "%s" | minus: 15768000 %}
+{% assign features = "" | split : "" %}
+{% for feature in spotlights %}
+    {% assign feature_date = feature.date |  date: "%s" |  plus: 0 %}
+    {% if feature_date > 3_months_ago and feature.banner_src != nil %}
+        {% assign features = features | push: feature %}
+    {% endif %}
+{% endfor %}
+
+{% if features.size == 0 %}
+    {% for feature in spotlights %}
+        {% assign feature_date = feature.date |  date: "%s" |  plus: 0 %}
+        {% if feature.banner_src != nil %}
+            {% assign features = features | push: feature %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% assign day = "now" |  date: "%e" | plus: 1 %}
+{% assign index = day |  modulo: features.size %}
+
+{% assign hero_story = features[index] %}
+
+{% comment %}
+    If there is a recent news story show it first for this week only
+{% endcomment %}
+
+{% include get/shared_articles.liquid %}
+
+{% assign one_week_ago = "now" | date: "%s" | minus: 1204800 %}
+{% for article in shared_articles %}
+  {% assign article_date = article.date | date: "%s" | plus: 0 %}
+  {% if article_date > one_week_ago and article.banner_src != nil %}
+    {% assign hero_story = article %}
+    {% break %}
+  {% endif %}
+{% endfor %}

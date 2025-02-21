@@ -63,13 +63,10 @@ If so, find us at the [support desk](https://support.opensciencegrid.org).
 ### Using Local Computer for Developement
 
 To make changes to the website clone the files and run the below line to run the container. 
-```
-docker run -it -p 8002:8000 -v $PWD:/app -w /app ruby:3.0 /bin/bash
-```
-In the container run the below line to build the website. 
-```
-bundle install
-bundle exec jekyll serve --watch --config _config.yml -H 0.0.0.0 -P 8000
+
+```shell
+git submodule update --init --recursive --remote
+docker compose up
 ```
 After the build is complete the website will be available at [http://0.0.0.0:8000/](http://0.0.0.0:8000/)
     
